@@ -25,15 +25,34 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: StreamBuilder(stream: FirebaseAuth.instance.onAuthStateChanged, builder: (ctx, userSnapshot) {
-        if (userSnapshot.connectionState == ConnectionState.waiting) {
-          return SplashScreen();
-        }
-        if (userSnapshot.hasData) {
-          return ChatScreen();
-        }
-        return AuthScreen();
-      }),
+      home: StreamBuilder(
+          stream: FirebaseAuth.instance.onAuthStateChanged,
+          builder: (ctx, userSnapshot) {
+            if (userSnapshot.connectionState == ConnectionState.waiting) {
+              return SplashScreen();
+            }
+            if (userSnapshot.hasData) {
+              return ChatScreen();
+            }
+            return AuthScreen();
+          }),
     );
   }
 }
+
+/*
+match/users/{uid}{
+allow write:if request.auth != null && request.auth.uid == uid;
+}
+
+match/users/{uid}{
+allow read: if request.auth != null;
+}
+
+match/chats/{document==**}{
+allow read, create: if request.auth != null;
+}
+
+
+
+*/
